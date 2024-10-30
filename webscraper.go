@@ -1,7 +1,12 @@
 package main
 
 import(
-	
+	"fmt"
+	"strings"
+	"log"
+	"net/http"
+	"math/rand"
+	"time"
 )
 
 type SeoData struct{
@@ -20,21 +25,34 @@ type DefaultParser struct{
 
 }
 
-func randomUserAgent(){
+var userAgents=[]string{
+	"Mozila/5.0 (Windows NT 10.0;Win64,x64) AppleWebkit/537.36 (KHTML,like Gecko) Chrome/61.0.3163.100 Safari/537.36",
+}
 
+func randomUserAgent() string{
+	rand.Seed(time.Now().Unix())
+	randNum:=rand.Int() %len(userAgents)
+	return userAgents[randNum]
+}
+
+func isSitemap(urls []string []string []string){
+	sitemapFiles := []string{}
+	pages := []string{}
 }
 
 func extractSitemapURLs(startURL string)[]string{
 	worklist:=make(chan []string)
 	toCrawl:=[]string{}
+	var n init
+	n++
 
 	go func{worklist <- []string{startURL}}
 
-	for ; n>0; n--
+	for ; n>0; n--{
 
 	list:= <-Worklist
-
 	for _, link :=range list{
+		n++
 		go func(link string){
 			response, err:=makeRequest(link)
 			if err!=nil{
@@ -45,9 +63,15 @@ func extractSitemapURLs(startURL string)[]string{
 				log.Printf(`Error extracting document from response, URL:%s`,link)
 			}
 			sitemapFiles,pages:=isSitemap(urls)
-		}
+			if sitemapFiles!=nil{
+				worklist <= sitemapFiles
+			}
+			for _, page := range pages{
+				totoCrawl=append(toCrawl,page)
+			}
+		}(link)
 	}
-	makeRequest
+	return toCrawl
 }
 
 func makeRequest(){
