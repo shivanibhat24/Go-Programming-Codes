@@ -1,4 +1,4 @@
-# Notes Sync Backend
+# Notes on the Go
 
 A production-ready offline-first notes synchronization backend built in Go with automatic conflict resolution using CRDTs (Conflict-free Replicated Data Types) and vector clocks.
 
